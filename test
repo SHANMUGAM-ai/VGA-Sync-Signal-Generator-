@@ -1,0 +1,15 @@
+`timescale 1ns/1ps
+module tb_vga_sync;
+    reg clk = 0;
+    wire hsync, vsync;
+    wire [9:0] x, y;
+
+    vga_sync uut(clk, hsync, vsync, x, y);
+    always #1 clk = ~clk;
+
+    initial begin
+        $dumpfile("vga.vcd"); $dumpvars(0, tb_vga_sync);
+        #5000;
+        $finish;
+    end
+endmodule
