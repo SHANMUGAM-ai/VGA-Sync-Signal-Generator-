@@ -1,0 +1,27 @@
+module vga_sync (
+    input clk,
+    output reg hsync, vsync,
+    output reg [9:0] x, y
+);
+    parameter H_PIXELS = 800; // total pixels per line
+    parameter V_LINES  = 525;
+
+    always @(posedge clk) begin
+        if (x == H_PIXELS - 1) begin
+            x <= 0;
+            if (y == V_LINES - 1)
+                y <= 0;
+            else
+                y <= y + 1;
+        end else begin
+            x <= x + 1;
+        end
+
+        hsync <= ~(x >= 656 && x < 752);
+        vsync <= ~(y >= 490 && y < 492);
+    end
+
+    initial begin
+        x = 0; y = 0;
+    end
+endmodule
